@@ -1,4 +1,4 @@
-# ClimateChangeAnalysis
+# Climate Change Analysis
 
 Using Python to analyze climate data from National Centers for Environmental Information(NOAA). Specifically to visualize trends in temperature over time. 
 
