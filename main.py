@@ -1,18 +1,25 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
-# Load GHCN dataset into a Pandas DataFrame
+# Load the climate data into a pandas DataFrame
 df = pd.read_csv('ghcn_dataset.csv')
-print(df.columns)
 
-# Convert the date column to a Pandas datetime object
+# Convert the DATE column to a datetime object
 df['DATE'] = pd.to_datetime(df['DATE'], format='%Y-%m-%d')
 
-# Subset the dataset to only include temperature data
-temp_df = df[(df['NAME'] == station_name) & (df['TEMP_ATTRIBUTES'] == '  H')]['TEMP']
 
-# Group the data by year and calculate the average temperature
-temp_df['year'] = temp_df['DATE'].dt.year
-#temp_by_year = temp_df.groupby('year')['value'].mean()
+# select only the relevant columns
+df = df[['DATE', 'NAME', 'TEMP']]
 
-# Plot the temperature trends over time
-#temp_by_year.plot()
+# filter out missing temperature data
+df = df[df['TEMP'] != -9999]
+
+# group by date and calculate average temperature for each day
+daily_temps = df.groupby('DATE')['TEMP'].mean()
+
+# plot the data
+plt.plot(daily_temps.index, daily_temps.values, color='blue')
+plt.xlabel('Date')
+plt.ylabel('Temperature (°C)')
+plt.title('Average Daily Temperature')
+plt.show()
